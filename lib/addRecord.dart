@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:date_picker_plus/date_picker_plus.dart';
 
 import 'database_functions.dart';
 
@@ -13,9 +14,7 @@ class AddRecord extends StatefulWidget {
 }
 
 class _AddRecordState extends State<AddRecord> {
-  //final _valueList = ['First', 'Second', 'Third'];
   late String _selectedValue;
-  final _initialDateTime = DateTime(1969, 1, 1);
   late var currentTime;
   late Future<Set<dynamic>> allTags;
 
@@ -37,24 +36,44 @@ class _AddRecordState extends State<AddRecord> {
           child: Center(
             child: Column(
               children: <Widget>[
-                SizedBox(
-                  height: 200,
-                  child: CupertinoDatePicker(
-                    mode: CupertinoDatePickerMode.date,
-                    initialDateTime: _initialDateTime,
-                    onDateTimeChanged: (DateTime newDateTime) {
-                      currentTime = newDateTime;
-                    },
-                  ),
+                Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child:
+                    DatePicker(
+                      currentDate: DateTime.now(),
+                      minDate: DateTime(2021, 1, 1),
+                      maxDate: DateTime(2028, 12, 31),
+                      onDateSelected: (value) {
+                        currentTime = value;
+                        },
+                      ),
                 ),
                 const Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),   // bordered outline
-                      labelText: 'Task Description',
-                    ),
-                  )
+                    padding: EdgeInsets.all(5.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),   // bordered outline
+                        labelText: 'TO',
+                      ),
+                    )
+                ),
+                const Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),   // bordered outline
+                        labelText: 'FROM',
+                      ),
+                    )
+                ),
+                const Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),   // bordered outline
+                        labelText: 'Task Description',
+                      ),
+                    )
                 ),
                 Padding(
                   padding: const EdgeInsets.all(5.0),
@@ -67,7 +86,7 @@ class _AddRecordState extends State<AddRecord> {
                           }
                           else if (snapshot.hasData && snapshot.data!.isNotEmpty){
                            var tagsToList = snapshot.data!.toList();
-                           _selectedValue = tagsToList[0];
+                           _selectedValue = tagsToList.first;
                             return DropdownButton(
                               value: _selectedValue,
                               items: tagsToList.map(
@@ -88,28 +107,21 @@ class _AddRecordState extends State<AddRecord> {
                         }
                         return const Center(child: CircularProgressIndicator());
                       }),
-
-                  //DropdownButton(
-                  //  value: _selectedValue,
-                  //  items: _valueList.map(
-                  //        (value) {
-                  //      return DropdownMenuItem(
-                  //        value: value,
-                  //        child: Text(value),
-                  //      );
-                  //    },
-                  //  ).toList(),
-                  //  onChanged: (value) {
-                  //    setState(() {
-                  //      _selectedValue = value as String;
-                  //    });
-                  //  },
-                  //),
                 ),
               ],
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed:() async{
+          //ADD DATA to DATABASE!!!
+          //MAKE sure there are NO NULL Values!!
+          //Redirect to home page when it is done (with values displayed)
+          //Start to work on Query option!
+          //await addRecord(, var to, var description, var tag)
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
