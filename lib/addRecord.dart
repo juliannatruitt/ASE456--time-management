@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:date_picker_plus/date_picker_plus.dart';
 
 import 'database_functions.dart';
+import 'main.dart';
 
 
 class AddRecord extends StatefulWidget {
@@ -17,6 +18,11 @@ class _AddRecordState extends State<AddRecord> {
   late String _selectedValue;
   late var currentTime;
   late Future<Set<dynamic>> allTags;
+  List<dynamic> tagsToList =[];
+  String? _timeFrom;
+  String? _timeTo;
+  String? _description;
+  late String _newTag;
 
   @override
   void initState() {
@@ -48,32 +54,35 @@ class _AddRecordState extends State<AddRecord> {
                         },
                       ),
                 ),
-                const Padding(
-                    padding: EdgeInsets.all(5.0),
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
                     child: TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),   // bordered outline
-                        labelText: 'TO',
-                      ),
-                    )
-                ),
-                const Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: TextField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),   // bordered outline
                         labelText: 'FROM',
                       ),
-                    )
+                      onChanged: (text) {_timeFrom = text;}
+                    ),
                 ),
-                const Padding(
-                    padding: EdgeInsets.all(5.0),
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
                     child: TextField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),   // bordered outline
+                        labelText: 'TO',
+                      ),
+                        onChanged: (text) {_timeTo=text;}
+                    ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: TextField(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),   // bordered outline
                         labelText: 'Task Description',
                       ),
-                    )
+                        onChanged: (text) {_description=text;}
+                    ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(5.0),
@@ -85,9 +94,13 @@ class _AddRecordState extends State<AddRecord> {
                             return Text('${snapshot.error} occurred');
                           }
                           else if (snapshot.hasData && snapshot.data!.isNotEmpty){
-                           var tagsToList = snapshot.data!.toList();
-                           _selectedValue = tagsToList.first;
-                            return DropdownButton(
+                            if (tagsToList.isEmpty) {
+                              tagsToList = snapshot.data!.toList();
+                              _selectedValue = tagsToList.first;
+                            }
+                            return Row(
+                              children: [
+                              DropdownButton(
                               value: _selectedValue,
                               items: tagsToList.map(
                                   (value){
@@ -102,7 +115,46 @@ class _AddRecordState extends State<AddRecord> {
                                   _selectedValue = value as String;
                                 });
                               },
-                            );
+                            ),
+                              FloatingActionButton(
+                                  onPressed: (){
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context){
+                                          return AlertDialog(
+                                            content: TextField(
+                                              onChanged: (text){
+                                                _newTag = text;
+                                              },
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                child: Text("Cancel"),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: Text("ADD"),
+                                                onPressed: () {
+                                                  if (_newTag.isNotEmpty){
+                                                    setState(() {
+                                                      tagsToList.add(_newTag);
+                                                      _selectedValue = _newTag;
+                                                    });
+                                                  }
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            ]
+                                          );
+                                        }
+                                    );
+                                  },
+                                child: const Text("ADD"),
+                                heroTag: "addNewTagButton",
+                              ),
+                            ]);
                           }
                         }
                         return const Center(child: CircularProgressIndicator());
@@ -115,13 +167,21 @@ class _AddRecordState extends State<AddRecord> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed:() async{
-          //ADD DATA to DATABASE!!!
-          //MAKE sure there are NO NULL Values!!
-          //Redirect to home page when it is done (with values displayed)
-          //Start to work on Query option!
-          //await addRecord(, var to, var description, var tag)
+          print(currentTime);
+          print(_timeFrom);
+          print(_timeTo);
+          print(_description);
+          print(_selectedValue);
+          if (currentTime != null && _timeFrom != null && _timeTo != null && _description != null && _selectedValue != null){
+            await addRecord(currentTime, _timeFrom, _timeTo, _description, _selectedValue);
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyApp())
+            );
+          }
         },
-        child: const Icon(Icons.add),
+        child: Text("submit"),
+        heroTag: "addTaskButton",
       ),
     );
   }

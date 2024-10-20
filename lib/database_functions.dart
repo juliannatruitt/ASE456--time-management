@@ -12,10 +12,11 @@ Future<void> initializeApp() async {
   );
 }
 
-Future<void> addRecord(var from, var to, var description, var tag) async {
+Future<void> addRecord(var date, var from, var to, var description, var tag) async {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   try {
     await firestore.collection('records').add({
+      'date': date,
       'from': from,
       'to': to,
       'description': description,

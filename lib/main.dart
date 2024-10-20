@@ -6,11 +6,6 @@ import 'database_functions.dart';
 
 void main() async {
   await initializeApp();
-  var tags = await getTags();
-  print(tags);
-  //await addRecord('9', '5', 'studyihg', 'study');
-  //var testing = await getCollection();
-  //print(testing?[0].length);
   runApp(const MyApp());
 }
 class MyApp extends StatelessWidget {
@@ -24,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Time Management'),
     );
   }
 }
@@ -72,13 +67,12 @@ class _MyHomePageState extends State<MyHomePage>{
                       child: ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index){
-                          if (snapshot.data![index].length == 4){
+                          if (snapshot.data![index].length == 5){
                             return Padding(
                               padding: EdgeInsets.all(20.0),
-                              child: Text('${snapshot.data![index]['from']} ${snapshot.data![index]['to']} ${snapshot.data![index]['description']} ${snapshot.data![index]['tag']}'),
+                              child: Text('${snapshot.data![index]['date']} ${snapshot.data![index]['from']} ${snapshot.data![index]['to']} ${snapshot.data![index]['description']} ${snapshot.data![index]['tag']}'),
                             );
                           }
-                          return const Text("none");
                         },
                       )
                     );
@@ -99,7 +93,8 @@ class _MyHomePageState extends State<MyHomePage>{
           );
         },
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        heroTag: "homePageButton",
+      ),
     );
   }
 }
