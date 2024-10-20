@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'queryRecord.dart';
 import 'addRecord.dart';
 import 'database_functions.dart';
 
@@ -85,15 +86,32 @@ class _MyHomePageState extends State<MyHomePage>{
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed:(){
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddRecord())
-          );
-        },
-        child: const Icon(Icons.add),
-        heroTag: "homePageButton",
+      floatingActionButton: Row(
+        children: [
+          Padding(
+          padding: const EdgeInsets.only(left: 20, right:100),
+          child:
+            FloatingActionButton(
+              onPressed:(){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddRecord())
+                );
+              },
+              child: const Icon(Icons.add),
+              heroTag: "homePageButton",
+            ),
+          ),
+          FloatingActionButton(
+              onPressed:(){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => QueryRecord())
+                );
+              },
+              child: const Icon(Icons.search)
+          )
+        ]
       ),
     );
   }

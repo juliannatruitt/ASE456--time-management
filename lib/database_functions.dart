@@ -46,9 +46,28 @@ Future<Set<dynamic>> getTags() async {
   QuerySnapshot snapshot = await collection.get();
   List<dynamic> result =  snapshot.docs.map((doc) => doc.data()).toList();
   for (var i=0; i<result.length; i++){
-    if (result[i].length == 4){
+    if (result[i].length == 5){
       uniqueTags.add(result[i]['tag']);
     }
   }
   return uniqueTags;
+}
+
+//needs to handle when a description is put in, to not match it exactly but match for words.
+Future<List<dynamic>> getFromTheDatabase(String attribute, String searchingForValue) async{
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final CollectionReference collection = firestore.collection('records');
+  late List valuesFromDatabase = [];
+
+  QuerySnapshot snapshot = await collection.get();
+  List<dynamic> result =  snapshot.docs.map((doc) => doc.data()).toList();
+
+  for (var i=0; i<result.length; i++){
+    if (result[i].length == 5){
+      if (result[i][attribute] == searchingForValue){
+        valuesFromDatabase.add(result[i]);
+      }
+    }
+  }
+  return valuesFromDatabase;
 }
