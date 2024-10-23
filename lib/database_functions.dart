@@ -54,6 +54,7 @@ Future<Set<dynamic>> getTags() async {
 }
 
 //needs to handle when a description is put in, to not match it exactly but match for words.
+//need conversion for the dates
 Future<List<dynamic>> getFromTheDatabase(String attribute, String searchingForValue) async{
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final CollectionReference collection = firestore.collection('records');
