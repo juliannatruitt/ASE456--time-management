@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
+import 'package:intl/intl.dart';
 
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,8 +35,13 @@ Future<List<dynamic>> getCollection() async {
   final CollectionReference collection = firestore.collection('records');
 
   QuerySnapshot snapshot = await collection.get();
-  List<dynamic> result =  snapshot.docs.map((doc) => doc.data()).toList();
-  return result;
+  List<dynamic> results =  snapshot.docs.map((doc) => doc.data()).toList();
+
+  for(int i=0; i< results.length; i++){
+    DateTime date = results[i]['date'].toDate();
+    results[i]['date'] = DateFormat('MM-dd-yyyy').format(date);
+  }
+  return results;
 }
 
 Future<Set<dynamic>> getTags() async {
