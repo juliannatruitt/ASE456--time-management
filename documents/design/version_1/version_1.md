@@ -1,4 +1,4 @@
-# Version 1 desgin:
+# Version 1 design:
 
 ## Home page: 
 - At the top list: "date", "to", "from", "description", "tag"
