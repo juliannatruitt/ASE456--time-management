@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'queryRecord.dart';
 import 'addRecord.dart';
-import 'database_functions.dart';
+import 'util/database_functions.dart';
 
 
 

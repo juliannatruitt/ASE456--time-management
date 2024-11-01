@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'database_functions.dart';
+import 'util/database_functions.dart';
 
 class QueryRecord extends StatefulWidget {
 
