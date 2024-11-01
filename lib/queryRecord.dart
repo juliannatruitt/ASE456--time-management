@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import 'database_functions.dart';
 
 class QueryRecord extends StatefulWidget {
@@ -67,6 +67,8 @@ class _QueryRecordState extends State<QueryRecord> {
                   child: results.isNotEmpty ? ListView.builder(
                     itemCount: results.length,
                     itemBuilder: (context, index){
+                      DateTime date = results[index]['date'].toDate();
+                      results[index]['date'] = DateFormat('yyyy/MM/dd').format(date);
                       return Text('${results[index]['date']} ${results[index]['from']} ${results[index]['to']} ${results[index]['description']} ${results[index]['tag']}');
                     }
                   ) : const Text("no results found"),

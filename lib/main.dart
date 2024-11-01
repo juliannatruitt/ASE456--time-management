@@ -42,6 +42,27 @@ class _MyHomePageState extends State<MyHomePage>{
     allRecords = getCollection();
   }
 
+  List<TableRow> addToTable(List<dynamic>? data){
+    List<TableRow> tableRow = [ const TableRow(children: [
+      Padding(padding: EdgeInsets.all(10.0), child:Text('DATE')),
+      Padding(padding: EdgeInsets.all(10.0), child:Text('TO')),
+      Padding(padding: EdgeInsets.all(10.0), child:Text('FROM')),
+      Padding(padding: EdgeInsets.all(10.0), child:Text('DESCRIPTION')),
+      Padding(padding: EdgeInsets.all(10.0), child:Text('TAG')),
+    ])];
+
+    for (int i=0; i< data!.length; i++){
+     tableRow.add(TableRow(children: [
+      Padding(padding: EdgeInsets.all(10.0), child:Text('${data[i]["date"]}')),
+      Padding(padding: EdgeInsets.all(10.0), child:Text('${data[i]["to"]}')),
+      Padding(padding: EdgeInsets.all(10.0), child:Text('${data[i]["from"]}')),
+      Padding(padding: EdgeInsets.all(10.0), child:Text('${data[i]["description"]}')),
+      Padding(padding: EdgeInsets.all(10.0), child:Text('${data[i]["tag"]}')),
+      ]));
+    }
+    return tableRow;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,17 +85,10 @@ class _MyHomePageState extends State<MyHomePage>{
                     return Text('${snapshot.error} occurred');
                   }
                   else if (snapshot.hasData){
+                    print(snapshot.data);
                     return Expanded(
-                      child: ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index){
-                          if (snapshot.data![index].length == 5){
-                            return Padding(
-                              padding: EdgeInsets.all(20.0),
-                              child: Text('${snapshot.data![index]['date']} ${snapshot.data![index]['from']} ${snapshot.data![index]['to']} ${snapshot.data![index]['description']} ${snapshot.data![index]['tag']}'),
-                            );
-                          }
-                        },
+                      child: Table(
+                        children: addToTable(snapshot.data),
                       )
                     );
                   }
