@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:date_picker_plus/date_picker_plus.dart';
 
-import 'util/database_functions.dart';
-import 'main.dart';
+import '../util/database_functions.dart';
+import '../main.dart';
 
 
 class AddRecord extends StatefulWidget {

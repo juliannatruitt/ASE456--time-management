@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'queryRecord.dart';
-import 'addRecord.dart';
+import 'package:time_management_ase456/views/tasks_list.dart';
+import 'views/queryRecord.dart';
+import 'views/addRecord.dart';
 import 'util/database_functions.dart';
 
 
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Time Management',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -87,9 +89,7 @@ class _MyHomePageState extends State<MyHomePage>{
                   else if (snapshot.hasData){
                     print(snapshot.data);
                     return Expanded(
-                      child: Table(
-                        children: addToTable(snapshot.data),
-                      )
+                      child: TasksList(snapshot.data)
                     );
                   }
 
@@ -112,8 +112,8 @@ class _MyHomePageState extends State<MyHomePage>{
                   MaterialPageRoute(builder: (context) => AddRecord())
                 );
               },
-              child: const Icon(Icons.add),
               heroTag: "homePageButton",
+              child: const Icon(Icons.add),
             ),
           ),
           FloatingActionButton(
