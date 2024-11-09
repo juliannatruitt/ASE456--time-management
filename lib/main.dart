@@ -3,7 +3,7 @@ import 'package:time_management_ase456/views/tasks_list.dart';
 import 'views/queryRecord.dart';
 import 'views/addRecord.dart';
 import 'util/database_functions.dart';
-
+import 'package:intl/intl.dart';
 
 
 void main() async {
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Time Management',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Time Management'),
@@ -36,7 +36,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage>{
-  late Future<List<dynamic>> allRecords;
+  late Future<List<dynamic>?>? allRecords;
+  DateTime? _selectedDateStart;
+  DateTime? _selectedDateEnd;
+  String testing="test";
 
   @override
   void initState(){
@@ -44,34 +47,102 @@ class _MyHomePageState extends State<MyHomePage>{
     allRecords = getCollection();
   }
 
-  List<TableRow> addToTable(List<dynamic>? data){
-    List<TableRow> tableRow = [ const TableRow(children: [
-      Padding(padding: EdgeInsets.all(10.0), child:Text('DATE')),
-      Padding(padding: EdgeInsets.all(10.0), child:Text('TO')),
-      Padding(padding: EdgeInsets.all(10.0), child:Text('FROM')),
-      Padding(padding: EdgeInsets.all(10.0), child:Text('DESCRIPTION')),
-      Padding(padding: EdgeInsets.all(10.0), child:Text('TAG')),
-    ])];
-
-    for (int i=0; i< data!.length; i++){
-     tableRow.add(TableRow(children: [
-      Padding(padding: EdgeInsets.all(10.0), child:Text('${data[i]["date"]}')),
-      Padding(padding: EdgeInsets.all(10.0), child:Text('${data[i]["to"]}')),
-      Padding(padding: EdgeInsets.all(10.0), child:Text('${data[i]["from"]}')),
-      Padding(padding: EdgeInsets.all(10.0), child:Text('${data[i]["description"]}')),
-      Padding(padding: EdgeInsets.all(10.0), child:Text('${data[i]["tag"]}')),
-      ]));
-    }
-    return tableRow;
+  void _whenReportPressed() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter dialogSetState) {
+            return AlertDialog(
+              content: Text("REPORT DATES"),
+              actions: [
+                Row(
+                  children: [
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Theme.of(context).primaryColor,
+                      ),
+                      onPressed: () {
+                        showDatePicker(
+                          context: context,
+                          initialDate: _selectedDateStart ?? DateTime.now(),
+                          firstDate: DateTime(2019),
+                          lastDate: DateTime(2029),
+                        ).then((pickedDate) {
+                          if (pickedDate != null) {
+                            dialogSetState(() {
+                              _selectedDateStart = pickedDate;
+                            });
+                          }
+                        });
+                      },
+                      child: _selectedDateStart == null
+                          ? const Text(
+                        'Choose Start Date',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )
+                          : Text(
+                        DateFormat('yyyy/MM/dd').format(_selectedDateStart!),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Theme.of(context).primaryColor,
+                      ),
+                      onPressed: () {
+                        showDatePicker(
+                          context: context,
+                          initialDate: _selectedDateEnd ?? DateTime.now(),
+                          firstDate: DateTime(2019),
+                          lastDate: DateTime(2029),
+                        ).then((pickedDate) {
+                          if (pickedDate != null) {
+                            dialogSetState(() {
+                              _selectedDateEnd = pickedDate;
+                            });
+                          }
+                        });
+                      },
+                      child: _selectedDateEnd == null
+                          ? const Text(
+                        'Choose End Date',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )
+                          : Text(
+                        DateFormat('yyyy/MM/dd').format(_selectedDateEnd!),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+                TextButton(
+                  onPressed: () {
+                    if (_selectedDateStart != null && _selectedDateEnd != null) {
+                      Navigator.of(context).pop();
+                      setState(() {
+                        allRecords = reportDates(_selectedDateStart!, _selectedDateEnd!);
+                      });
+                    } else {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: Text("Show Tasks"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: [TextButton(onPressed:_whenReportPressed, child: const Text("REPORT"))],
       ),
       body: Center(
         child: Column(
@@ -96,37 +167,46 @@ class _MyHomePageState extends State<MyHomePage>{
                 }
                 return const Text("no data available");
               }
-            )
+            ),
+            Text(testing)
           ],
+
         ),
       ),
-      floatingActionButton: Row(
-        children: [
-          Padding(
-          padding: const EdgeInsets.only(left: 20, right:100),
-          child:
-            FloatingActionButton(
+      floatingActionButton: Container(
+        padding: const EdgeInsets.only(bottom: 20, right: 20),
+        child: Stack (
+          alignment: Alignment.bottomRight,
+          children: [
+            Positioned(
+            bottom: 0,
+            right: 0,
+            child: FloatingActionButton(
               onPressed:(){
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddRecord())
+                    context,
+                    MaterialPageRoute(builder: (context) => AddRecord())
                 );
               },
               heroTag: "homePageButton",
               child: const Icon(Icons.add),
+              ),
             ),
-          ),
-          FloatingActionButton(
-              onPressed:(){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => QueryRecord())
-                );
-              },
-              child: const Icon(Icons.search)
-          )
-        ]
-      ),
+            Positioned(
+              bottom: 0,
+              right: 70,
+              child: FloatingActionButton(
+                  onPressed:(){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => QueryRecord())
+                    );
+                  },
+                  child: const Icon(Icons.search)
+              )
+            ),
+        ]),
+      )
     );
   }
 }

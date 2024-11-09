@@ -35,6 +35,12 @@ Future<List<dynamic>> getCollection() async {
   QuerySnapshot snapshot = await collection.get();
   List<dynamic> results =  snapshot.docs.map((doc) => doc.data()).toList();
 
+  results.sort((a, b) {
+    DateTime dateA = a['date'].toDate();
+    DateTime dateB = b['date'].toDate();
+    return dateB.compareTo(dateA);
+  });
+
   for(int i=0; i< results.length; i++){
     DateTime date = results[i]['date'].toDate();
     results[i]['date'] = DateFormat('yyyy/MM/dd').format(date);
@@ -57,9 +63,6 @@ Future<Set<dynamic>> getTags() async {
   return uniqueTags;
 }
 
-//needs to handle when a description is put in, to not match it exactly but match for words.
-//need conversion for the dates
-//LEFT OFF HERE
 Future<List<dynamic>> getFromTheDatabase(String attribute, String searchingForValue) async{
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final CollectionReference collection = firestore.collection('records');
@@ -136,4 +139,41 @@ Future<List<dynamic>> getFromTheDatabase(String attribute, String searchingForVa
     queryTag();
   }
   return valuesFromDatabase;
+}
+
+Future<List<dynamic>> reportDates(DateTime startDate, DateTime endDate) async {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final CollectionReference collection = firestore.collection('records');
+
+  QuerySnapshot snapshot = await collection.get();
+  List<dynamic> resultsFromDatabase =  snapshot.docs.map((doc) => doc.data()).toList();
+  List<dynamic> modifedResults=[];
+
+  if (startDate.isAfter(endDate)){
+    return [];
+  }
+
+  for(int i=0; i< resultsFromDatabase.length; i++){
+    DateTime dateFromDatabase = resultsFromDatabase[i]['date'].toDate();
+    if (dateFromDatabase.isAfter(startDate) && dateFromDatabase.isBefore(endDate)){
+      print(dateFromDatabase);
+      print(startDate);
+      print(endDate);
+      modifedResults.add(resultsFromDatabase[i]);
+    }
+  }
+
+  modifedResults.sort((a, b) {
+    DateTime dateA = a['date'].toDate();
+    DateTime dateB = b['date'].toDate();
+    return dateB.compareTo(dateA);
+  });
+
+  for(int i=0; i< modifedResults.length; i++){
+    DateTime date = modifedResults[i]['date'].toDate();
+    modifedResults[i]['date'] = DateFormat('yyyy/MM/dd').format(date);
+  }
+
+  return modifedResults;
+
 }

@@ -16,16 +16,19 @@ class TasksList extends StatelessWidget {
             'No tasks added yet!',
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
         ],
       )
           :Column(
           children: [
-            Text(
-              'All Tasks',
-              style: Theme.of(context).textTheme.titleLarge,
+            Padding(padding: EdgeInsets.all(10),
+              child:
+                Text(
+                'All Tasks',
+                style: Theme.of(context).textTheme.titleLarge,
+                ),
             ),
             Expanded(
               child:
@@ -43,7 +46,7 @@ class TasksList extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.all(6),
                           child: FittedBox(
-                            child: Text('${tasks![index]['tag']}'),
+                            child: Text('${tasks![index]['tag']}', style:Theme.of(context).textTheme.titleSmall,),
                           ),
                         ),
                       ),

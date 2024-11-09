@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:date_picker_plus/date_picker_plus.dart';
-
 import '../util/database_functions.dart';
 import '../main.dart';
 
@@ -16,13 +14,13 @@ class AddRecord extends StatefulWidget {
 
 class _AddRecordState extends State<AddRecord> {
   late String _selectedValue;
-  late String _timeInHoursFrom='12';
-  late String _timeInMinutesFrom='00';
-  late String _amOrPmFrom='PM';
-  late String _timeInHoursTo='1';
-  late String _timeInMinutesTo='00';
-  late String _amOrPmTo='PM';
-  late var currentTime;
+  String _timeInHoursFrom='12';
+  String _timeInMinutesFrom='00';
+  String _amOrPmFrom='PM';
+  String _timeInHoursTo='1';
+  String _timeInMinutesTo='00';
+  String _amOrPmTo='PM';
+  DateTime? _selectedDate;
   late Future<Set<dynamic>> allTags;
   List<dynamic> tagsToList =[];
   String? _timeFrom;
@@ -36,6 +34,21 @@ class _AddRecordState extends State<AddRecord> {
     allTags = getTags();
   }
 
+  void _presentDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime(2029),
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context){
@@ -52,15 +65,17 @@ class _AddRecordState extends State<AddRecord> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.all(5.0),
-                    child:
-                      DatePicker(
-                        currentDate: DateTime.now(),
-                        minDate: DateTime(2021, 1, 1),
-                        maxDate: DateTime(2028, 12, 31),
-                        onDateSelected: (value) {
-                          currentTime = value;
-                          },
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                          foregroundColor: Theme.of(context).primaryColor),
+                      onPressed: _presentDatePicker,
+                      child:const Text(
+                          'Choose Date',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
                         ),
+                      ),
+                    ),
                   ),
                   Padding(
                       padding: const EdgeInsets.all(5.0),
@@ -268,18 +283,35 @@ class _AddRecordState extends State<AddRecord> {
         //time -> valid (with or without am/pm)
         //tag -> one word
         onPressed:() async{
-          if (currentTime != null && _description != null && _selectedValue != null){
+          if (_selectedDate != null && _description != null && _selectedValue != null){
             _timeFrom = "$_timeInHoursFrom:$_timeInMinutesFrom$_amOrPmFrom";
             _timeTo = "$_timeInHoursTo:$_timeInMinutesTo$_amOrPmTo";
-            await addRecord(currentTime, _timeFrom, _timeTo, _description, _selectedValue);
+            await addRecord(_selectedDate, _timeFrom, _timeTo, _description, _selectedValue);
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => MyApp())
             );
           }
+          else{
+            showDialog(
+              context: context,
+              builder: (BuildContext context){
+              return AlertDialog(
+                title:  const Text('Error'),
+                content:  const Text('Please Fill Out All Fields'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'OK'),
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            }
+            );
+          }
         },
-        child: Text("submit"),
         heroTag: "addTaskButton",
+        child: const Text("submit"),
       ),
     );
   }

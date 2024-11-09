@@ -1,3 +1,4 @@
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../util/database_functions.dart';
@@ -26,7 +27,7 @@ class _QueryRecordState extends State<QueryRecord> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Query Task'),
+        title: const Text('Query Task'),
       ),
       body: SafeArea(
         child: Padding(
@@ -51,7 +52,7 @@ class _QueryRecordState extends State<QueryRecord> {
                       });
                     },
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   Expanded(
                     child: TextField(
                         decoration: const InputDecoration(
@@ -69,7 +70,32 @@ class _QueryRecordState extends State<QueryRecord> {
                     itemBuilder: (context, index){
                       DateTime date = results[index]['date'].toDate();
                       results[index]['date'] = DateFormat('yyyy/MM/dd').format(date);
-                      return Text('${results[index]['date']} ${results[index]['from']} ${results[index]['to']} ${results[index]['description']} ${results[index]['tag']}');
+                      return Card(
+                        elevation: 5,
+                        margin: const EdgeInsets.symmetric(
+                        vertical: 8,
+                        horizontal: 30,
+                        ),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                          radius: 40,
+                          child: Padding(
+                            padding: EdgeInsets.all(6),
+                            child: FittedBox(
+                              child: Text('${results[index]['tag']}', style:Theme.of(context).textTheme.titleSmall,),
+                            ),
+                          ),
+                          ),
+                          title: Text(
+                            "${results[index]['date']}\n${results[index]['from']}-${results[index]['to']}",
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          subtitle: Text(
+                            "${results[index]['description']}",
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                        ),
+                      );
                     }
                   ) : const Text("no results found"),
               ),
@@ -87,8 +113,8 @@ class _QueryRecordState extends State<QueryRecord> {
             //print(results);
             }
           },
-        child: Text("Find"),
         heroTag: "queryTaskButton",
+        child: const Text("Find"),
       ),
     );
   }
