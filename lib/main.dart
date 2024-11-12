@@ -39,7 +39,6 @@ class _MyHomePageState extends State<MyHomePage>{
   late Future<List<dynamic>?>? allRecords;
   DateTime? _selectedDateStart;
   DateTime? _selectedDateEnd;
-  String testing="test";
 
   @override
   void initState(){
@@ -168,7 +167,6 @@ class _MyHomePageState extends State<MyHomePage>{
                 return const Text("no data available");
               }
             ),
-            Text(testing)
           ],
 
         ),
