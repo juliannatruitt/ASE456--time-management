@@ -23,13 +23,6 @@ class TasksList extends StatelessWidget {
       )
           :Column(
           children: [
-            Padding(padding: EdgeInsets.all(10),
-              child:
-                Text(
-                'All Tasks',
-                style: Theme.of(context).textTheme.titleLarge,
-                ),
-            ),
             Expanded(
               child:
               ListView.builder(

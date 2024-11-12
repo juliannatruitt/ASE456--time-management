@@ -135,6 +135,11 @@ class _MyHomePageState extends State<MyHomePage>{
       },
     );
   }
+
+  String _convertDateToFormattedString(DateTime date){
+    return DateFormat('yyyy/MM/dd').format(date);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,10 +162,23 @@ class _MyHomePageState extends State<MyHomePage>{
                     return Text('${snapshot.error} occurred');
                   }
                   else if (snapshot.hasData){
-                    print(snapshot.data);
-                    return Expanded(
-                      child: TasksList(snapshot.data)
-                    );
+                    return SingleChildScrollView(
+                        child: Column(children:[
+                          Padding(padding: EdgeInsets.all(10),
+                            child: (_selectedDateStart == null && _selectedDateEnd == null) ?
+                            Text(
+                              'All Tasks',
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ) : Text(
+                              'Tasks from ${_convertDateToFormattedString(_selectedDateStart!)} to ${_convertDateToFormattedString(_selectedDateEnd!)}',
+                              style: Theme.of(context).textTheme.titleLarge,
+                            )
+                          ),
+                          SizedBox(
+                            height: 450,
+                            child: TasksList(snapshot.data),
+                          ),
+                    ]));
                   }
 
                 }

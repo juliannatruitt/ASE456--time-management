@@ -153,12 +153,12 @@ Future<List<dynamic>> reportDates(DateTime startDate, DateTime endDate) async {
     return [];
   }
 
+  DateTime adjustedStartDate = startDate.subtract(const Duration(days: 1));
+  DateTime adjustedEndDate = endDate.add(const Duration(days: 1));
+
   for(int i=0; i< resultsFromDatabase.length; i++){
     DateTime dateFromDatabase = resultsFromDatabase[i]['date'].toDate();
-    if (dateFromDatabase.isAfter(startDate) && dateFromDatabase.isBefore(endDate)){
-      print(dateFromDatabase);
-      print(startDate);
-      print(endDate);
+    if (dateFromDatabase.isAfter(adjustedStartDate) && dateFromDatabase.isBefore(adjustedEndDate)){
       modifedResults.add(resultsFromDatabase[i]);
     }
   }
