@@ -39,6 +39,7 @@ class _MyHomePageState extends State<MyHomePage>{
   late Future<List<dynamic>?>? allRecords;
   DateTime? _selectedDateStart;
   DateTime? _selectedDateEnd;
+  bool _priority_selected = false;
 
   @override
   void initState(){
@@ -146,7 +147,21 @@ class _MyHomePageState extends State<MyHomePage>{
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
-        actions: [TextButton(onPressed:_whenReportPressed, child: const Text("REPORT"))],
+        actions: [TextButton(onPressed:_whenReportPressed, child: const Text("REPORT")),
+                  TextButton(onPressed:(){
+                    if(!_priority_selected){
+                      setState(() {
+                        allRecords = priority();
+                        _priority_selected = !_priority_selected;
+                      });
+                    }
+                    else{
+                      setState(() {
+                        allRecords = getCollection();();
+                        _priority_selected = !_priority_selected;
+                      });
+                    }
+                    }, child: const Text("PRIORITY")),],
       ),
       body: Center(
         child: Column(

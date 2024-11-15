@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'package:intl/intl.dart';
 
+
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -173,7 +174,35 @@ Future<List<dynamic>> reportDates(DateTime startDate, DateTime endDate) async {
     DateTime date = modifedResults[i]['date'].toDate();
     modifedResults[i]['date'] = DateFormat('yyyy/MM/dd').format(date);
   }
-
   return modifedResults;
+}
 
+Future<List<dynamic>> priority() async {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final CollectionReference collection = firestore.collection('records');
+
+  QuerySnapshot snapshot = await collection.get();
+  List<dynamic> results =  snapshot.docs.map((doc) => doc.data()).toList();
+
+
+  results.sort((a, b) {
+    DateFormat format = DateFormat("h:mma");
+
+    DateTime startTimeA = format.parse(a['from'].toUpperCase());
+    DateTime endTimeA = format.parse(a['to'].toUpperCase());
+
+    DateTime startTimeB = format.parse(b['from'].toUpperCase());
+    DateTime endTimeB = format.parse(b['to'].toUpperCase());
+
+    Duration differenceA = endTimeA.difference(startTimeA);
+    Duration differenceB = endTimeB.difference(startTimeB);
+
+    return differenceB.compareTo(differenceA);
+  });
+
+  for(int i=0; i< results.length; i++){
+    DateTime date = results[i]['date'].toDate();
+    results[i]['date'] = DateFormat('yyyy/MM/dd').format(date);
+  }
+  return results;
 }
