@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'package:intl/intl.dart';
 
+
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -35,6 +36,12 @@ Future<List<dynamic>> getCollection() async {
   QuerySnapshot snapshot = await collection.get();
   List<dynamic> results =  snapshot.docs.map((doc) => doc.data()).toList();
 
+  results.sort((a, b) {
+    DateTime dateA = a['date'].toDate();
+    DateTime dateB = b['date'].toDate();
+    return dateB.compareTo(dateA);
+  });
+
   for(int i=0; i< results.length; i++){
     DateTime date = results[i]['date'].toDate();
     results[i]['date'] = DateFormat('yyyy/MM/dd').format(date);
@@ -57,9 +64,6 @@ Future<Set<dynamic>> getTags() async {
   return uniqueTags;
 }
 
-//needs to handle when a description is put in, to not match it exactly but match for words.
-//need conversion for the dates
-//LEFT OFF HERE
 Future<List<dynamic>> getFromTheDatabase(String attribute, String searchingForValue) async{
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final CollectionReference collection = firestore.collection('records');
@@ -136,4 +140,69 @@ Future<List<dynamic>> getFromTheDatabase(String attribute, String searchingForVa
     queryTag();
   }
   return valuesFromDatabase;
+}
+
+Future<List<dynamic>> reportDates(DateTime startDate, DateTime endDate) async {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final CollectionReference collection = firestore.collection('records');
+
+  QuerySnapshot snapshot = await collection.get();
+  List<dynamic> resultsFromDatabase =  snapshot.docs.map((doc) => doc.data()).toList();
+  List<dynamic> modifedResults=[];
+
+  if (startDate.isAfter(endDate)){
+    return [];
+  }
+
+  DateTime adjustedStartDate = startDate.subtract(const Duration(days: 1));
+  DateTime adjustedEndDate = endDate.add(const Duration(days: 1));
+
+  for(int i=0; i< resultsFromDatabase.length; i++){
+    DateTime dateFromDatabase = resultsFromDatabase[i]['date'].toDate();
+    if (dateFromDatabase.isAfter(adjustedStartDate) && dateFromDatabase.isBefore(adjustedEndDate)){
+      modifedResults.add(resultsFromDatabase[i]);
+    }
+  }
+
+  modifedResults.sort((a, b) {
+    DateTime dateA = a['date'].toDate();
+    DateTime dateB = b['date'].toDate();
+    return dateB.compareTo(dateA);
+  });
+
+  for(int i=0; i< modifedResults.length; i++){
+    DateTime date = modifedResults[i]['date'].toDate();
+    modifedResults[i]['date'] = DateFormat('yyyy/MM/dd').format(date);
+  }
+  return modifedResults;
+}
+
+Future<List<dynamic>> priority() async {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final CollectionReference collection = firestore.collection('records');
+
+  QuerySnapshot snapshot = await collection.get();
+  List<dynamic> results =  snapshot.docs.map((doc) => doc.data()).toList();
+
+
+  results.sort((a, b) {
+    DateFormat format = DateFormat("h:mma");
+
+    DateTime startTimeA = format.parse(a['from'].toUpperCase());
+    DateTime endTimeA = format.parse(a['to'].toUpperCase());
+
+    DateTime startTimeB = format.parse(b['from'].toUpperCase());
+    DateTime endTimeB = format.parse(b['to'].toUpperCase());
+
+    Duration differenceA = endTimeA.difference(startTimeA);
+    Duration differenceB = endTimeB.difference(startTimeB);
+
+    return differenceB.compareTo(differenceA);
+  });
+
+  for(int i=0; i< results.length; i++){
+    DateTime date = results[i]['date'].toDate();
+    results[i]['date'] = DateFormat('yyyy/MM/dd').format(date);
+  }
+  return results;
 }
