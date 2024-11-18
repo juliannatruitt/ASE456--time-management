@@ -161,7 +161,8 @@ class _MyHomePageState extends State<MyHomePage>{
                         _priority_selected = !_priority_selected;
                       });
                     }
-                    }, child: const Text("PRIORITY")),],
+                    },style: _priority_selected == true ? ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red),) : null,
+                      child: const Text("PRIORITY")),],
       ),
       body: Center(
         child: Column(
