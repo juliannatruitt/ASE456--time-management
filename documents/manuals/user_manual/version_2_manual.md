@@ -1,0 +1,21 @@
+# Version 2 Manual
+
+- Launch the application
+- The loadup screen will show you a list of all the tasks you have created (if you have created some already) in order of the dates. (most recent date at the top)
+- To get a report of a range of dates, click the report button 
+    - From there, pick a starting date and end date
+        - the starting date must come before the end date, or it will not work
+    - Once you have dates selected, press the "Show Tasks" button and the hompage will be refreshed with the range of dates you selected.
+- To see your tasks in descneding order of tasks you've spent most time on (at the top) to least time spent (at the buttom), click the priority button
+    - To get tasks to the way they orignially were (in order based on date), unclick the priority button.
+- to add a task, click the add button (+) at the bottom of the page
+    - Once on the "Add Task" page, add a date, time from-to, description, and tag for your task 
+        - Example: 2024/10/30 6:00pm 8:00pm "celebrate halloween" personal
+        - once done creating the task, click complete for it to get added to the database
+        - you will be redirected back to the home page, where you will see the task has been added to your page
+- To search for a specific task, click the search button at the bottom
+  - You can search a task by the date, description, or tag
+  - select which attribute you want to search for in the drop down menu
+    - if you select date, use "today" or the format yyyy/mm/dd
+    - if you select description, it will find any task descriptions that contain the text you type
+    - if you use tag, it will return all tasks associated with that tag.
