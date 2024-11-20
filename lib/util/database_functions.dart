@@ -220,3 +220,13 @@ Future<List<dynamic>> priority() async {
   }
   return results;
 }
+
+Future<void> deleteTask(String id) {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final CollectionReference collection = firestore.collection('records');
+  return collection
+      .doc(id)
+      .delete()
+      .then((value) => print("User Deleted"))
+      .catchError((error) => print("Failed to delete user: $error"));
+}

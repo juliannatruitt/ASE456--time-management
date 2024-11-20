@@ -1,7 +1,7 @@
 # Time Management Application
 
 # Credits:
-### accessing/adding the firestone database:
+### accessing/adding to/deleting from the firestone database:
 - https://firebase.flutter.dev/docs/firestore/usage
 
 ### reading from the database:

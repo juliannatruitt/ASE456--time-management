@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:time_management_ase456/util/database_functions.dart';
 
-class TasksList extends StatelessWidget {
+class TasksList extends StatefulWidget {
   final List<dynamic>? tasks;
 
   TasksList(this.tasks);
 
   @override
+  State<TasksList> createState() => _TasksListState();
+}
+class _TasksListState extends State<TasksList> {
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       height: 450,
-      child: tasks!.isEmpty
+      child: widget.tasks!.isEmpty
           ? Column(
         children: <Widget>[
           Text(
@@ -39,24 +45,34 @@ class TasksList extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.all(6),
                           child: FittedBox(
-                            child: Text('${tasks![index]['tag']}', style:Theme.of(context).textTheme.titleSmall,),
+                            child: Text('${widget.tasks![index]['tag']}', style:Theme.of(context).textTheme.titleSmall,),
                           ),
                         ),
                       ),
                       title: Text(
-                        "${tasks![index]['date']}\n${tasks![index]['from']}-${tasks![index]['to']}",
+                        "${widget.tasks![index]['date']}\n${widget.tasks![index]['from']}-${widget.tasks![index]['to']}",
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       subtitle: Text(
-                        "${tasks![index]['description']}",
+                        "${widget.tasks![index]['description']}",
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
-                    ),
-                  );},
-                itemCount: tasks!.length,
+                      trailing: IconButton(icon: const Icon(Icons.delete, color: Colors.red), onPressed:() {
+                        deleteTask(widget.tasks![index]['id']).then((_) {
+                        setState(() {
+                          widget.tasks!.removeAt(index);
+                        });
+                    });
+                  },
+                  ),
+                  ),
+                  );
+                },
+                itemCount: widget.tasks!.length,
               ),
             ),
-      ]),
+          ],
+      ),
     );
   }
 }
