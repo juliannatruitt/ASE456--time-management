@@ -41,7 +41,7 @@ class _TasksListState extends State<TasksList> {
                     ),
                     child: ListTile(
                       leading: CircleAvatar(
-                        radius: 20,
+                        radius: 25,
                         child: Padding(
                           padding: EdgeInsets.all(4),
                           child: FittedBox(
