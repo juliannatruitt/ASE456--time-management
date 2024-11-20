@@ -54,7 +54,7 @@ class _AddRecordState extends State<AddRecord> {
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Task'),
+        title: const Text('Add Task'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -64,7 +64,7 @@ class _AddRecordState extends State<AddRecord> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: TextButton(
                       style: TextButton.styleFrom(
                           foregroundColor: Theme.of(context).primaryColor),
@@ -273,8 +273,8 @@ class _AddRecordState extends State<AddRecord> {
                                           }
                                       );
                                     },
-                                  child: const Text("ADD"),
                                   heroTag: "addNewTagButton",
+                                  child: const Icon(Icons.add),
                                 ),
                               ]);
                             }

@@ -41,9 +41,9 @@ class _TasksListState extends State<TasksList> {
                     ),
                     child: ListTile(
                       leading: CircleAvatar(
-                        radius: 40,
+                        radius: 20,
                         child: Padding(
-                          padding: EdgeInsets.all(6),
+                          padding: EdgeInsets.all(4),
                           child: FittedBox(
                             child: Text('${widget.tasks![index]['tag']}', style:Theme.of(context).textTheme.titleSmall,),
                           ),
