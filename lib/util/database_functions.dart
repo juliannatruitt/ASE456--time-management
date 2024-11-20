@@ -34,7 +34,11 @@ Future<List<dynamic>> getCollection() async {
   final CollectionReference collection = firestore.collection('records');
 
   QuerySnapshot snapshot = await collection.get();
-  List<dynamic> results =  snapshot.docs.map((doc) => doc.data()).toList();
+  List<dynamic> results =  snapshot.docs.map((doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    data['id'] = doc.id;
+    return data;
+  }).toList();
 
   results.sort((a, b) {
     DateTime dateA = a['date'].toDate();
@@ -46,6 +50,7 @@ Future<List<dynamic>> getCollection() async {
     DateTime date = results[i]['date'].toDate();
     results[i]['date'] = DateFormat('yyyy/MM/dd').format(date);
   }
+  print(results);
   return results;
 }
 
@@ -146,8 +151,13 @@ Future<List<dynamic>> reportDates(DateTime startDate, DateTime endDate) async {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final CollectionReference collection = firestore.collection('records');
 
+
   QuerySnapshot snapshot = await collection.get();
-  List<dynamic> resultsFromDatabase =  snapshot.docs.map((doc) => doc.data()).toList();
+  List<dynamic> resultsFromDatabase =  snapshot.docs.map((doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    data['id'] = doc.id;
+    return data;
+  }).toList();
   List<dynamic> modifedResults=[];
 
   if (startDate.isAfter(endDate)){
@@ -182,7 +192,11 @@ Future<List<dynamic>> priority() async {
   final CollectionReference collection = firestore.collection('records');
 
   QuerySnapshot snapshot = await collection.get();
-  List<dynamic> results =  snapshot.docs.map((doc) => doc.data()).toList();
+  List<dynamic> results =  snapshot.docs.map((doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    data['id'] = doc.id;
+    return data;
+  }).toList();
 
 
   results.sort((a, b) {
