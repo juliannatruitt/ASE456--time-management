@@ -57,29 +57,36 @@ class _AddRecordState extends State<AddRecord> {
         title: Text('Add Task'),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
           child: Center(
-            child: SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.all(5.0),
+                    padding: EdgeInsets.all(8.0),
                     child: TextButton(
                       style: TextButton.styleFrom(
                           foregroundColor: Theme.of(context).primaryColor),
                       onPressed: _presentDatePicker,
-                      child:const Text(
+                      child:_selectedDate == null ? const Text(
                           'Choose Date',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
+                        ),
+                      ) : Text(
+                        _selectedDate.toString().substring(0,10),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ),
                   Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Row(children: [
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
                         DropdownButton(
                         value: _timeInHoursFrom,
                         items: ['1','2','3','4','5','6','7','8','9','10','11','12'].map(
@@ -132,8 +139,10 @@ class _AddRecordState extends State<AddRecord> {
                       ),
                   ),
                   Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Row(children: [
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
                         DropdownButton(
                           value: _timeInHoursTo,
                           items: ['1','2','3','4','5','6','7','8','9','10','11','12'].map(
@@ -186,8 +195,9 @@ class _AddRecordState extends State<AddRecord> {
                       ),
                   ),
                   Padding(
-                      padding: const EdgeInsets.all(5.0),
+                      padding: const EdgeInsets.only(top:8.0,bottom:8.0, left:50.0, right:50.0),
                       child: TextField(
+                        maxLines: null,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),   // bordered outline
                           labelText: 'Task Description',
@@ -196,7 +206,7 @@ class _AddRecordState extends State<AddRecord> {
                       ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: FutureBuilder(
                         future: allTags,
                         builder: (context, snapshot){
@@ -210,6 +220,7 @@ class _AddRecordState extends State<AddRecord> {
                                 _selectedValue = tagsToList.first;
                               }
                               return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                 DropdownButton(
                                 value: _selectedValue,
@@ -276,12 +287,7 @@ class _AddRecordState extends State<AddRecord> {
             ),
           ),
         ),
-      ),
       floatingActionButton: FloatingActionButton(
-        //VALIDATE:
-        //date -> in correct format
-        //time -> valid (with or without am/pm)
-        //tag -> one word
         onPressed:() async{
           if (_selectedDate != null && _description != null && _selectedValue != null){
             _timeFrom = "$_timeInHoursFrom:$_timeInMinutesFrom$_amOrPmFrom";

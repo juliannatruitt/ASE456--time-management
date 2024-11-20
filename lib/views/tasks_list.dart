@@ -62,10 +62,10 @@ class _TasksListState extends State<TasksList> {
                         setState(() {
                           widget.tasks!.removeAt(index);
                         });
-                    });
-                  },
-                  ),
-                  ),
+                        });
+                        },
+                      ),
+                    ),
                   );
                 },
                 itemCount: widget.tasks!.length,

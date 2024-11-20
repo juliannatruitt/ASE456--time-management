@@ -227,6 +227,6 @@ Future<void> deleteTask(String id) {
   return collection
       .doc(id)
       .delete()
-      .then((value) => print("User Deleted"))
-      .catchError((error) => print("Failed to delete user: $error"));
+      .then((value) => print("Tasks Deleted"))
+      .catchError((error) => print("Failed to delete task: $error"));
 }
