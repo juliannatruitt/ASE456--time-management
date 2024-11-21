@@ -222,6 +222,15 @@ class _MyHomePageState extends State<MyHomePage>{
                     ),
                   ],
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                TextButton(
+                  onPressed: (){
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Cancel"),
+                ),
                 TextButton(
                   onPressed: () {
                     if (_selectedDateStart != null && _selectedDateEnd != null) {
@@ -235,7 +244,9 @@ class _MyHomePageState extends State<MyHomePage>{
                       Navigator.of(context).pop();
                     }
                   },
-                  child: Text("Show Tasks"),
+                  child: const Text("Show Tasks"),
+                ),
+                ],
                 ),
               ],
             );
