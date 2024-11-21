@@ -238,43 +238,50 @@ class _AddRecordState extends State<AddRecord> {
                                   });
                                 },
                               ),
-                                FloatingActionButton(
-                                    onPressed: (){
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context){
-                                            return AlertDialog(
-                                              content: TextField(
-                                                onChanged: (text){
-                                                  _newTag = text;
-                                                },
-                                              ),
-                                              actions: [
-                                                TextButton(
-                                                  child: Text("Cancel"),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                                TextButton(
-                                                  child: Text("ADD"),
-                                                  onPressed: () {
-                                                    if (_newTag.isNotEmpty){
-                                                      setState(() {
-                                                        tagsToList.add(_newTag);
-                                                        _selectedValue = _newTag;
-                                                      });
-                                                    }
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                              ]
-                                            );
-                                          }
-                                      );
-                                    },
-                                  heroTag: "addNewTagButton",
-                                  child: const Icon(Icons.add),
+                                Padding(
+                                  padding: const EdgeInsets.only(left:10),
+                                  child:SizedBox(
+                                    width: 30,
+                                    height: 30,
+                                    child: FloatingActionButton(
+                                      onPressed: (){
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context){
+                                              return AlertDialog(
+                                                  content: TextField(
+                                                    onChanged: (text){
+                                                      _newTag = text;
+                                                    },
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      child: const Text("Cancel"),
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop();
+                                                      },
+                                                    ),
+                                                    TextButton(
+                                                      child: const Text("Add Tag"),
+                                                      onPressed: () {
+                                                        if (_newTag.isNotEmpty){
+                                                          setState(() {
+                                                            tagsToList.add(_newTag);
+                                                            _selectedValue = _newTag;
+                                                          });
+                                                        }
+                                                        Navigator.of(context).pop();
+                                                      },
+                                                    ),
+                                                  ]
+                                              );
+                                            }
+                                        );
+                                      },
+                                      heroTag: "addNewTagButton",
+                                      child: const Icon(Icons.add),
+                                    ),
+                                  )
                                 ),
                               ]);
                             }
