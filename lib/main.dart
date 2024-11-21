@@ -47,6 +47,113 @@ class _MyHomePageState extends State<MyHomePage>{
     allRecords = getCollection();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+        actions: [TextButton(onPressed:_whenReportPressed, child: const Text("REPORT")),
+                  TextButton(onPressed:_whenPriorityPressed,style: _priority_selected == true ? ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red),) : null,
+                      child: const Text("PRIORITY")),],
+      ),
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            FutureBuilder<List<dynamic>?>(
+              future: allRecords,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                else if (snapshot.connectionState == ConnectionState.done){
+                  if (snapshot.hasError){
+                    return Text('${snapshot.error} occurred');
+                  }
+                  else if (snapshot.hasData){
+                    return SingleChildScrollView(
+                        child: Column(children:[
+                          Padding(padding: EdgeInsets.all(10),
+                            child: (_selectedDateStart == null && _selectedDateEnd == null) ?
+                            Text(
+                              'All Tasks',
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ) : Text(
+                              'Tasks from ${_convertDateToFormattedString(_selectedDateStart!)} to ${_convertDateToFormattedString(_selectedDateEnd!)}',
+                              style: Theme.of(context).textTheme.titleLarge,
+                            )
+                          ),
+                          SizedBox(
+                            height: 450,
+                            child: TasksList(snapshot.data),
+                          ),
+                    ]));
+                  }
+
+                }
+                return const Text("no data available");
+              }
+            ),
+          ],
+
+        ),
+      ),
+      floatingActionButton: Container(
+        padding: const EdgeInsets.only(bottom: 20, right: 20),
+        child: Stack (
+          alignment: Alignment.bottomRight,
+          children: [
+            Positioned(
+            bottom: 0,
+            right: 0,
+            child: FloatingActionButton(
+              onPressed:(){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddRecord())
+                );
+              },
+              heroTag: "homePageButton",
+              child: const Icon(Icons.add),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 70,
+              child: FloatingActionButton(
+                  onPressed:(){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => QueryRecord())
+                    );
+                  },
+                  child: const Icon(Icons.search)
+              )
+            ),
+        ]),
+      )
+    );
+  }
+
+  String _convertDateToFormattedString(DateTime date){
+    return DateFormat('yyyy/MM/dd').format(date);
+  }
+
+  void _whenPriorityPressed(){
+    if(!_priority_selected){
+      setState(() {
+        allRecords = priority();
+        _priority_selected = !_priority_selected;
+      });
+    }
+    else{
+      setState(() {
+        allRecords = getCollection();
+        _priority_selected = !_priority_selected;
+      });
+    }
+  }
+
   void _whenReportPressed() {
     showDialog(
       context: context,
@@ -134,111 +241,6 @@ class _MyHomePageState extends State<MyHomePage>{
           },
         );
       },
-    );
-  }
-
-  String _convertDateToFormattedString(DateTime date){
-    return DateFormat('yyyy/MM/dd').format(date);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-        actions: [TextButton(onPressed:_whenReportPressed, child: const Text("REPORT")),
-                  TextButton(onPressed:(){
-                    if(!_priority_selected){
-                      setState(() {
-                        allRecords = priority();
-                        _priority_selected = !_priority_selected;
-                      });
-                    }
-                    else{
-                      setState(() {
-                        allRecords = getCollection();();
-                        _priority_selected = !_priority_selected;
-                      });
-                    }
-                    },style: _priority_selected == true ? ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red),) : null,
-                      child: const Text("PRIORITY")),],
-      ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            FutureBuilder<List<dynamic>?>(
-              future: allRecords,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                else if (snapshot.connectionState == ConnectionState.done){
-                  if (snapshot.hasError){
-                    return Text('${snapshot.error} occurred');
-                  }
-                  else if (snapshot.hasData){
-                    return SingleChildScrollView(
-                        child: Column(children:[
-                          Padding(padding: EdgeInsets.all(10),
-                            child: (_selectedDateStart == null && _selectedDateEnd == null) ?
-                            Text(
-                              'All Tasks',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ) : Text(
-                              'Tasks from ${_convertDateToFormattedString(_selectedDateStart!)} to ${_convertDateToFormattedString(_selectedDateEnd!)}',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            )
-                          ),
-                          SizedBox(
-                            height: 450,
-                            child: TasksList(snapshot.data),
-                          ),
-                    ]));
-                  }
-
-                }
-                return const Text("no data available");
-              }
-            ),
-          ],
-
-        ),
-      ),
-      floatingActionButton: Container(
-        padding: const EdgeInsets.only(bottom: 20, right: 20),
-        child: Stack (
-          alignment: Alignment.bottomRight,
-          children: [
-            Positioned(
-            bottom: 0,
-            right: 0,
-            child: FloatingActionButton(
-              onPressed:(){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddRecord())
-                );
-              },
-              heroTag: "homePageButton",
-              child: const Icon(Icons.add),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 70,
-              child: FloatingActionButton(
-                  onPressed:(){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => QueryRecord())
-                    );
-                  },
-                  child: const Icon(Icons.search)
-              )
-            ),
-        ]),
-      )
     );
   }
 }
