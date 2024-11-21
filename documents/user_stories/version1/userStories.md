@@ -10,3 +10,4 @@
   - as a user, I want a drop down menu to be able to choose which criteria to search, so that it is easy to use
   - as a user, I want a separate page for searching a task, so the application is easy to use
 - as a user, I want to be given some leniency/flexibility when querying data, so the application is easier to use.
+- as a user, I want my tasks to be displayed in an easy to read way, so the application i am using is not confusing and is easy on the eyes.
