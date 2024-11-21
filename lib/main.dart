@@ -40,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage>{
   DateTime? _selectedDateStart;
   DateTime? _selectedDateEnd;
   bool _prioritySelected = false;
+  String heading="All Tasks";
 
   @override
   void initState(){
@@ -74,14 +75,10 @@ class _MyHomePageState extends State<MyHomePage>{
                     return SingleChildScrollView(
                         child: Column(children:[
                           Padding(padding: EdgeInsets.all(10),
-                            child: (_selectedDateStart == null && _selectedDateEnd == null) ?
-                            Text(
-                              'All Tasks',
+                            child: Text(
+                              heading,
                               style: Theme.of(context).textTheme.titleLarge,
-                            ) : Text(
-                              'Tasks from ${_convertDateToFormattedString(_selectedDateStart!)} to ${_convertDateToFormattedString(_selectedDateEnd!)}',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            )
+                            ),
                           ),
                           SizedBox(
                             height: 450,
@@ -144,12 +141,14 @@ class _MyHomePageState extends State<MyHomePage>{
       setState(() {
         allRecords = priority();
         _prioritySelected = !_prioritySelected;
+        heading="Priority";
       });
     }
     else{
       setState(() {
         allRecords = getCollection();
         _prioritySelected = !_prioritySelected;
+        heading="All Tasks";
       });
     }
   }
@@ -229,6 +228,8 @@ class _MyHomePageState extends State<MyHomePage>{
                       Navigator.of(context).pop();
                       setState(() {
                         allRecords = reportDates(_selectedDateStart!, _selectedDateEnd!);
+                        heading='Tasks from ${_convertDateToFormattedString(_selectedDateStart!)} to ${_convertDateToFormattedString(_selectedDateEnd!)}';
+                        if (_prioritySelected){_prioritySelected=!_prioritySelected;}
                       });
                     } else {
                       Navigator.of(context).pop();
