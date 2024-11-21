@@ -233,7 +233,7 @@ class _MyHomePageState extends State<MyHomePage>{
                 ),
                 TextButton(
                   onPressed: () {
-                    if (_selectedDateStart != null && _selectedDateEnd != null) {
+                    if (_selectedDateStart != null && _selectedDateEnd != null && _selectedDateStart!.isBefore(_selectedDateEnd!)) {
                       Navigator.of(context).pop();
                       setState(() {
                         allRecords = reportDates(_selectedDateStart!, _selectedDateEnd!);
