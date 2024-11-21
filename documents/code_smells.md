@@ -7,4 +7,4 @@
   - SOLUTION: separate queryDate, queryDescription, and queryTask into separate methods to eliminate the method from being extremely long and hard to read.
 - duplicate code
   - PROBLEM: many of the functions in the database_functions use the same duplicate code for a portion of the method
-  - SOLUTION: 
+  - SOLUTION: ...
