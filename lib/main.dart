@@ -59,6 +59,13 @@ class _MyHomePageState extends State<MyHomePage>{
       ),
       body: Column(
           children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                heading,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
             Expanded(
             child: FutureBuilder<List<dynamic>?>(
               future: allRecords,
@@ -71,7 +78,8 @@ class _MyHomePageState extends State<MyHomePage>{
                     return Text('${snapshot.error} occurred');
                   }
                   else if (snapshot.hasData){
-                    return TasksList(snapshot.data);
+                    return
+                        TasksList(snapshot.data);
                   }
                 }
                 return const Text("no data available");
