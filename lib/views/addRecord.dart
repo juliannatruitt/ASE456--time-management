@@ -31,7 +31,7 @@ class _AddRecordState extends State<AddRecord> {
   @override
   void initState() {
     super.initState();
-    allTags = getTags();
+    allTags = getAllTags();
   }
 
   void _presentDatePicker() {
@@ -299,7 +299,7 @@ class _AddRecordState extends State<AddRecord> {
           if (_selectedDate != null && _description != null && _selectedValue != null){
             _timeFrom = "$_timeInHoursFrom:$_timeInMinutesFrom$_amOrPmFrom";
             _timeTo = "$_timeInHoursTo:$_timeInMinutesTo$_amOrPmTo";
-            await addRecord(_selectedDate, _timeFrom, _timeTo, _description, _selectedValue);
+            await addRecord({'date':_selectedDate, 'from':_timeFrom, 'to':_timeTo, 'description':_description, 'tag':_selectedValue});
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => MyApp())

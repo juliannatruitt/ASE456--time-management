@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage>{
   @override
   void initState(){
     super.initState();
-    allRecords = getCollection();
+    allRecords = getRecordsCollection();
   }
 
   @override
@@ -58,10 +58,10 @@ class _MyHomePageState extends State<MyHomePage>{
                   TextButton(onPressed:_whenPriorityPressed,style: _prioritySelected == true ? ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red),) : null,
                       child: const Text("PRIORITY")),],
       ),
-      body: Center(
-        child: Column(
+      body: Column(
           children: <Widget>[
-            FutureBuilder<List<dynamic>?>(
+            Expanded(
+            child: FutureBuilder<List<dynamic>?>(
               future: allRecords,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -72,29 +72,15 @@ class _MyHomePageState extends State<MyHomePage>{
                     return Text('${snapshot.error} occurred');
                   }
                   else if (snapshot.hasData){
-                    return SingleChildScrollView(
-                        child: Column(children:[
-                          Padding(padding: EdgeInsets.all(10),
-                            child: Text(
-                              heading,
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 450,
-                            child: TasksList(snapshot.data),
-                          ),
-                    ]));
+                    return TasksList(snapshot.data);
                   }
-
                 }
                 return const Text("no data available");
               }
             ),
+            ),
           ],
-
         ),
-      ),
       floatingActionButton: Container(
         padding: const EdgeInsets.only(bottom: 20, right: 20),
         child: Stack (
@@ -146,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage>{
     }
     else{
       setState(() {
-        allRecords = getCollection();
+        allRecords = getRecordsCollection();
         _prioritySelected = !_prioritySelected;
         heading="All Tasks";
       });
