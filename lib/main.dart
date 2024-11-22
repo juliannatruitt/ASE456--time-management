@@ -4,8 +4,6 @@ import 'views/queryRecord.dart';
 import 'views/addRecord.dart';
 import 'util/database_functions.dart';
 import 'package:intl/intl.dart';
-import 'package:dcdg/dcdg.dart';
-
 
 void main() async {
   await initializeApp();
