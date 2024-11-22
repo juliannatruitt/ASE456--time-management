@@ -87,6 +87,11 @@ class _AddRecordState extends State<AddRecord> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          const Text(
+                            'Start Time:',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          const Padding(padding: EdgeInsets.only(right:10)),
                         DropdownButton(
                         value: _timeInHoursFrom,
                         items: ['1','2','3','4','5','6','7','8','9','10','11','12'].map(
@@ -143,6 +148,11 @@ class _AddRecordState extends State<AddRecord> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          const Text(
+                            'End Time:',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          const Padding(padding: EdgeInsets.only(right:10)),
                         DropdownButton(
                           value: _timeInHoursTo,
                           items: ['1','2','3','4','5','6','7','8','9','10','11','12'].map(
@@ -222,6 +232,11 @@ class _AddRecordState extends State<AddRecord> {
                               return Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  const Text(
+                                    'Tag:',
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
+                                const Padding(padding: EdgeInsets.only(right:10)),
                                 DropdownButton(
                                 value: _selectedValue,
                                 items: tagsToList.map(
