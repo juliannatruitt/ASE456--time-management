@@ -6,5 +6,3 @@
 
 ### reading from the database:
 - https://stackoverflow.com/questions/67435169/get-all-documents-from-a-firestore-collection-in-flutter
-
-### expanse app example in ...
