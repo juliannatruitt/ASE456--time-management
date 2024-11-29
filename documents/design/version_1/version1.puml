@@ -1,0 +1,80 @@
+@startuml
+set namespaceSeparator ::
+
+class "time_management_ase456::addRecord.dart::AddRecord" {
+  +State<AddRecord> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "time_management_ase456::addRecord.dart::AddRecord"
+
+class "time_management_ase456::addRecord.dart::_AddRecordState" {
+  -String _selectedValue
+  -String _timeInHoursFrom
+  -String _timeInMinutesFrom
+  -String _amOrPmFrom
+  -String _timeInHoursTo
+  -String _timeInMinutesTo
+  -String _amOrPmTo
+  +dynamic currentTime
+  +dynamic allTags
+  +List<dynamic> tagsToList
+  -String? _timeFrom
+  -String? _timeTo
+  -String? _description
+  -String _newTag
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "time_management_ase456::addRecord.dart::_AddRecordState"
+
+class "time_management_ase456::firebase_options.dart::DefaultFirebaseOptions" {
+  {static} +FirebaseOptions web
+  {static} +FirebaseOptions android
+  {static} +FirebaseOptions windows
+  {static} +FirebaseOptions currentPlatform
+}
+
+"time_management_ase456::firebase_options.dart::DefaultFirebaseOptions" o-- "firebase_core_platform_interface::firebase_core_platform_interface.dart::FirebaseOptions"
+
+class "time_management_ase456::main.dart::MyApp" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "time_management_ase456::main.dart::MyApp"
+
+class "time_management_ase456::main.dart::MyHomePage" {
+  +String title
+  +State<MyHomePage> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "time_management_ase456::main.dart::MyHomePage"
+
+class "time_management_ase456::main.dart::_MyHomePageState" {
+  +dynamic allRecords
+  +void initState()
+  +List<TableRow> addToTable()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "time_management_ase456::main.dart::_MyHomePageState"
+
+class "time_management_ase456::queryRecord.dart::QueryRecord" {
+  +State<QueryRecord> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "time_management_ase456::queryRecord.dart::QueryRecord"
+
+class "time_management_ase456::queryRecord.dart::_QueryRecordState" {
+  +List<String> queryOption
+  -String _selectedValue
+  -String? _valueToFindInDatabase
+  +List<dynamic> results
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "time_management_ase456::queryRecord.dart::_QueryRecordState"
+
+
+@enduml

@@ -1,0 +1,31 @@
+# Code Smells:
+- dead code
+  - PROBLEM: some code from feature 1 to feature 2 is no longer being used.
+  - SOLUTION: remove code that is not being used anymore
+- long method
+  - PROBLEM: the getFromDatabase method (method to query date/description/task) in the database_functions.dart is very long
+  - SOLUTION: separate queryDate, queryDescription, and queryTask into separate methods to eliminate the method from being extremely long and hard to read.
+- duplicate code
+  - PROBLEM: many of the functions in the database_functions use the same duplicate code for the first portion of the method to get all data from the records collection
+  - SOLUTION: extracted that code into its own function, so instead of 6 lines of code per function that uses it, they only use 1 line of code now to call it.
+- long class
+  - PROBLEM: had creating a card for all the tasks in the main class
+  - SOLUTION: moved that code to its own class (tasks_list.dart) to reduce the length of that class and separate code.
+- not following SRP
+  - PROBLEM: had some methods doing more than 1 thing (not following SRP)
+  - SOLUTION: split up code so that each function takes care of 1 thing.
+- complexity
+  - PROBLEM: some of the code in the database_function.dart file is very complex and hard to read
+  - SOLUTION: implied code as much as possible to be easier to understand
+- comments
+  - PROBLEM: had comments above some methods to explain what they do (int he database_functions class)
+  - SOLUTION: renamed methods to be explicitly what they do, so that the comments could be deleted (the best comment is a good method name!)
+- lazy class
+  - PROBLEM: had a class for the show dates report pop up box
+  - SOLUTION: this class was easier and less code/complex if I just kept the functionality in a method in the main class. It was not necessary for this to have its own class.
+- middle man
+  - PROBLEM: method was only being used to call another method
+  - SOLUTION: removed the unnecessary middle man from the code
+- long parameter list
+  - PROBLEM: addRecord function in database_functions takes 5 parameters
+  - SOLUTION: instead, just make it have one parameter (which is a map for the input)

@@ -106,7 +106,7 @@ class _QueryRecordState extends State<QueryRecord> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (_valueToFindInDatabase != null && _selectedValue != null){
-            List<dynamic> resultsReturned = await getFromTheDatabase(_selectedValue, _valueToFindInDatabase!);
+            List<dynamic> resultsReturned = await queryContextFromTheDatabase(_selectedValue, _valueToFindInDatabase!);
             setState(() {
               results = resultsReturned;
             });
