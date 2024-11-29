@@ -24,6 +24,8 @@
   - PROBLEM: had a class for the show dates report pop up box
   - SOLUTION: this class was easier and less code/complex if I just kept the functionality in a method in the main class. It was not necessary for this to have its own class.
 - middle man
+  - PROBLEM: method was only being used to call another method
+  - SOLUTION: removed the unnecessary middle man from the code
 - long parameter list
   - PROBLEM: addRecord function in database_functions takes 5 parameters
   - SOLUTION: instead, just make it have one parameter (which is a map for the input)
